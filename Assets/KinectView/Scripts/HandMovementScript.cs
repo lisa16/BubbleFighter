@@ -15,7 +15,7 @@ public class HandMovementScript : MonoBehaviour {
 		}
 		else
 		{
-			gameObject.transform.position = new Vector3( -RightHand.transform.position.x,
+			gameObject.transform.position = new Vector3( RightHand.transform.position.x,
 			                                            RightHand.transform.position.y,
 			                                            transform.position.z
 			                                            );
