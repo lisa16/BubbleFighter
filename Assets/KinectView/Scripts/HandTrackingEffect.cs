@@ -14,9 +14,14 @@ public class HandTrackingEffect : MonoBehaviour {
 	private float timeBA1, timeIce1, timeFire1, timeUlti1, timeBlock1;
 	private float timeBA2, timeIce2, timeFire2, timeUlti2, timeBlock2;
 
+	private AudioSource baka;
+	private AudioSource hadookan;
+
 	// Use this for initialization
 	void Start ()
 	{
+		hadookan = this.GetComponents<AudioSource> ()[0];
+		baka = this.GetComponents<AudioSource> ()[1];
 		_trackedId1 = 0;
 		_trackedId2 = 0;
 
@@ -321,17 +326,22 @@ public class HandTrackingEffect : MonoBehaviour {
 						break;
 				case 2:
 						moves = (GameObject)Instantiate (ice);
+						baka.Play();
 						break;
 				case 3:
 						moves = (GameObject)Instantiate (fire);
+						baka.Play();
 						break;
 				case 4:
 						moves = (GameObject)Instantiate (ultimate);
+						hadookan.Play();
 						break;
 				case 5:
 						moves = (GameObject)Instantiate (block);
 						break;
 				}
+				if (moves != null)
+					Destroy (moves, 3);
 
 				moves.transform.position = new Vector3 (position.X, position.Y, position.Z);
 
