@@ -88,7 +88,7 @@ public class BodySourceView : MonoBehaviour
 					_isRightHandClosed = true;
 					if(isCreated == false)
 						isCreated = true;
-						CreateNewobject(GameObject.Find("HandRight").transform.localPosition);
+						//CreateNewobject(GameObject.Find("HandRight").transform.localPosition);
 				}
 				else{
 					_isRightHandClosed = false;
@@ -199,10 +199,5 @@ public class BodySourceView : MonoBehaviour
         return new Vector3(-joint.Position.Z * 10, joint.Position.Y * 10, joint.Position.X * 10);
     }
 
-	private void CreateNewobject(Vector3 pos) {
-			GameObject newCard = (GameObject)Instantiate(card);
-			newCard.transform.position = new Vector3(pos.x + Time.deltaTime, pos.y, pos.z);
-//			newCard.AddComponent(new Rigidbody())
 
-		}
 }
