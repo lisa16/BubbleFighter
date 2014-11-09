@@ -23,7 +23,7 @@ public class HandMovementScript : MonoBehaviour {
 		{
 			gameObject.transform.position = new Vector3( RightHand.transform.position.x,
 			                                            RightHand.transform.position.y,
-			                                            transform.position.z
+			                                            RightHand.transform.position.z
 			                                            );
 
 			if(body.isRightHandClosed() == true )

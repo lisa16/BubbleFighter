@@ -9,6 +9,10 @@ public class BodySourceView : MonoBehaviour
     public GameObject BodySourceManager;
 	private bool _isRightHandClosed;
 
+	private bool isCreated = true;
+
+	public GameObject card;
+
 	public bool isRightHandClosed()
 	{
 		return _isRightHandClosed;
@@ -79,10 +83,18 @@ public class BodySourceView : MonoBehaviour
             if(body.IsTracked)
             {
                 trackedIds.Add (body.TrackingId);
-				if(body.HandRightState == Kinect.HandState.Closed)
+
+				if(body.HandRightState == Kinect.HandState.Closed){
 					_isRightHandClosed = true;
-				else
+					if(isCreated == false)
+						isCreated = true;
+						CreateNewobject(GameObject.Find("HandRight").transform.localPosition);
+				}
+				else{
 					_isRightHandClosed = false;
+					isCreated = false;
+
+				}
             }
         }
         
@@ -186,4 +198,11 @@ public class BodySourceView : MonoBehaviour
     {
         return new Vector3(joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
     }
+
+	private void CreateNewobject(Vector3 pos) {
+			GameObject newCard = (GameObject)Instantiate(card);
+			newCard.transform.position = new Vector3(pos.x + Time.deltaTime, pos.y, pos.z);
+//			newCard.AddComponent(new Rigidbody())
+
+		}
 }
