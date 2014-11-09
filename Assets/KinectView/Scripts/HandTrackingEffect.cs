@@ -54,7 +54,7 @@ public class HandTrackingEffect : MonoBehaviour {
 				}
 				
 				Kinect.CameraSpacePoint bodyPos = body.Joints[Kinect.JointType.SpineBase].Position;
-				if( (bodyPos.X > -1.0f && bodyPos.X < 1.0f) 
+				if( (bodyPos.X > -1.0f && bodyPos.X < 0) 
 				   && (bodyPos.Z > .5f && bodyPos.Z < 1.3f) )
 				{
 					if(body.IsTracked && bodyPos.Z < closetPerson.Z)
@@ -210,7 +210,7 @@ public class HandTrackingEffect : MonoBehaviour {
 				}else if ((body.HandRightState == Kinect.HandState.Closed 
 				           && body.HandLeftState == Kinect.HandState.Open) ||
 				          (body.HandRightState == Kinect.HandState.Open
-				 && body.HandLeftState == Kinect.HandState.Closed))
+				 		   && body.HandLeftState == Kinect.HandState.Closed))
 				{
 					//Basic Attack
 					if(body.HandRightState == Kinect.HandState.Closed)
@@ -233,7 +233,7 @@ public class HandTrackingEffect : MonoBehaviour {
 				}else if ((body.HandRightState == Kinect.HandState.Lasso 
 				           && body.HandLeftState == Kinect.HandState.Open) ||
 				          (body.HandRightState == Kinect.HandState.Open
-				 && body.HandLeftState == Kinect.HandState.Lasso))
+				 		   && body.HandLeftState == Kinect.HandState.Lasso))
 				{
 					//Ice
 					if(body.HandRightState == Kinect.HandState.Lasso)
@@ -255,7 +255,7 @@ public class HandTrackingEffect : MonoBehaviour {
 				}else if ((body.HandRightState == Kinect.HandState.Lasso 
 				           && body.HandLeftState == Kinect.HandState.Closed) ||
 				          (body.HandRightState == Kinect.HandState.Closed
-				 && body.HandLeftState == Kinect.HandState.Lasso))
+				 		   && body.HandLeftState == Kinect.HandState.Lasso))
 				{
 					//Fire
 					if(body.HandRightState == Kinect.HandState.Lasso)
@@ -283,7 +283,8 @@ public class HandTrackingEffect : MonoBehaviour {
 						timeUlti2 = 0;
 					}
 					
-				}else
+				}
+				else
 				{
 					//Standby
 				}
