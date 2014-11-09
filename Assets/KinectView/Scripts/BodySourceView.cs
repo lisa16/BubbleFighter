@@ -13,6 +13,22 @@ public class BodySourceView : MonoBehaviour
 
 	public GameObject card;
 
+	public GameObject P1Head;
+	public GameObject P2Head;
+	public GameObject P1Body;
+	public GameObject P2Body;
+	public GameObject P1Limb;
+	public GameObject P2Limb;
+
+	void Start () {
+		P1Head = (GameObject)Instantiate (P1Head);
+		P1Body = (GameObject)Instantiate (P1Body);
+		P1Limb = (GameObject)Instantiate (P1Limb);
+		P2Head = (GameObject)Instantiate (P2Head);
+		P2Body = (GameObject)Instantiate (P2Body);
+		P2Limb = (GameObject)Instantiate (P2Limb);
+	}
+
 	public bool isRightHandClosed()
 	{
 		return _isRightHandClosed;
@@ -159,8 +175,16 @@ public class BodySourceView : MonoBehaviour
 //		bool isP1 = isPlayer1;
 
 //		ulong player = body.TrackingId;
+//		Kinect.Joint? head = null;
+//		head = body.Joints [Kinect.JointType.Head];
+//		if(head !=null && head.HasValue)
+//		{
+//			var pos = head.Value.Position;
+////			pos.X pos.Y pos.Z
+//		}
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
+
             Kinect.Joint sourceJoint = body.Joints[jt];
             Kinect.Joint? targetJoint = null;
             
@@ -201,13 +225,25 @@ public class BodySourceView : MonoBehaviour
         }
     }
     
-    private static Vector3 GetVector3FromJoint(Kinect.Joint joint, bool isPlayer1)
+    private Vector3 GetVector3FromJoint(Kinect.Joint joint, bool isPlayer1)
     {
 		if(isPlayer1)
 		{
+			if(joint.JointType == Kinect.JointType.Head)
+			{
+				var hPos = joint.Position;
+				P1Head.transform.position = new Vector3 (hPos.X, hPos.Y, hPos.Z);
+			}
 			return new Vector3(-(joint.Position.Z * 10), joint.Position.Y * 10, joint.Position.X * 10);
 		}
+		if(joint.JointType == Kinect.JointType.Head)
+		{
+			var hPos = joint.Position;
+			P2Head.transform.position = new Vector3 (hPos.X, hPos.Y, hPos.Z);
+		}
         return new Vector3(joint.Position.Z * 10, joint.Position.Y * 10, joint.Position.X * 10);
+
+
     }
 
 //	private static Vector3 GetVector3FromJointP2(Kinect.Joint joint)
