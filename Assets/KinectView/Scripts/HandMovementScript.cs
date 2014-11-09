@@ -3,8 +3,13 @@ using System.Collections;
 
 public class HandMovementScript : MonoBehaviour {
 
+	private bool _closedOrnot;
+	private BodySourceView body;
+	public GameObject BodySourceManager;
+
 	private GameObject RightHand; // I create variable
 	void Start () {
+		body = BodySourceManager.GetComponent<BodySourceView> ();
 	}
 	void Update ()
 	{
@@ -12,6 +17,7 @@ public class HandMovementScript : MonoBehaviour {
 		if( RightHand == null)
 		{
 			RightHand = GameObject.Find("HandRight");
+
 		}
 		else
 		{
@@ -19,6 +25,11 @@ public class HandMovementScript : MonoBehaviour {
 			                                            RightHand.transform.position.y,
 			                                            transform.position.z
 			                                            );
+
+			if(body.isRightHandClosed() == true )
+				transform.renderer.material.color = Color.white;
+			else
+				transform.renderer.material.color = Color.blue;
 		}
 	}
 }

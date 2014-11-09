@@ -7,6 +7,12 @@ public class BodySourceView : MonoBehaviour
 {
     public Material BoneMaterial;
     public GameObject BodySourceManager;
+	private bool _isRightHandClosed;
+
+	public bool isRightHandClosed()
+	{
+		return _isRightHandClosed;
+	}
     
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
@@ -73,6 +79,10 @@ public class BodySourceView : MonoBehaviour
             if(body.IsTracked)
             {
                 trackedIds.Add (body.TrackingId);
+				if(body.HandRightState == Kinect.HandState.Closed)
+					_isRightHandClosed = true;
+				else
+					_isRightHandClosed = false;
             }
         }
         
