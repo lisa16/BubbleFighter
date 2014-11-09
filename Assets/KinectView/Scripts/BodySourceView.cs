@@ -109,7 +109,8 @@ public class BodySourceView : MonoBehaviour
                 _Bodies.Remove(trackingId);
             }
         }
-
+		isPlayer1 = true;
+		
         foreach(var body in data)
         {
             if (body == null)
@@ -125,6 +126,7 @@ public class BodySourceView : MonoBehaviour
                 }
                 
                 RefreshBodyObject(body, _Bodies[body.TrackingId]);
+				isPlayer1 = false;
             }
         }
     }
@@ -150,8 +152,13 @@ public class BodySourceView : MonoBehaviour
         return body;
     }
     
+	bool isPlayer1 = true;
+
     private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
     {
+//		bool isP1 = isPlayer1;
+
+//		ulong player = body.TrackingId;
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
             Kinect.Joint sourceJoint = body.Joints[jt];
@@ -163,14 +170,14 @@ public class BodySourceView : MonoBehaviour
             }
             
             Transform jointObj = bodyObject.transform.FindChild(jt.ToString());
-            jointObj.localPosition = GetVector3FromJoint(sourceJoint);
-            
-            LineRenderer lr = jointObj.GetComponent<LineRenderer>();
+			jointObj.localPosition = GetVector3FromJoint(sourceJoint, isPlayer1);
+
+			LineRenderer lr = jointObj.GetComponent<LineRenderer>();
             if(targetJoint.HasValue)
             {
                 lr.SetPosition(0, jointObj.localPosition);
-                lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
-                lr.SetColors(GetColorForState (sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
+				lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value, isPlayer1));
+				lr.SetColors(GetColorForState (sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
             }
             else
             {
@@ -194,10 +201,19 @@ public class BodySourceView : MonoBehaviour
         }
     }
     
-    private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
+    private static Vector3 GetVector3FromJoint(Kinect.Joint joint, bool isPlayer1)
     {
-        return new Vector3(-joint.Position.Z * 10, joint.Position.Y * 10, joint.Position.X * 10);
+		if(isPlayer1)
+		{
+			return new Vector3(-(joint.Position.Z * 10), joint.Position.Y * 10, joint.Position.X * 10);
+		}
+        return new Vector3(joint.Position.Z * 10, joint.Position.Y * 10, joint.Position.X * 10);
     }
 
+//	private static Vector3 GetVector3FromJointP2(Kinect.Joint joint)
+//	{
+//		return new Vector3(joint.Position.Z * 10, joint.Position.Y * 10, joint.Position.X * 10);
+//	}
+	
 
 }
