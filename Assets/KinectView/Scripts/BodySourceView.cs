@@ -11,12 +11,16 @@ public class BodySourceView : MonoBehaviour
 
 	private bool isCreated = true;
 
+	private bool isPlayer1 = true;
+
 	public GameObject card;
 
 	public bool isRightHandClosed()
 	{
 		return _isRightHandClosed;
 	}
+
+	public ulong _player1, _player2;
     
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
@@ -152,11 +156,15 @@ public class BodySourceView : MonoBehaviour
         return body;
     }
     
-	bool isPlayer1 = true;
 
     private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
     {
 //		bool isP1 = isPlayer1;
+
+		if (isPlayer1)
+						_player1 = body.TrackingId;
+				else
+						_player2 = body.TrackingId;
 
 //		ulong player = body.TrackingId;
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
