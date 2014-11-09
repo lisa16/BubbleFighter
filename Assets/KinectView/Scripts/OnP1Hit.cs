@@ -17,14 +17,17 @@ public class OnP1Hit : MonoBehaviour {
 	{
 		if(collision.gameObject.tag == "Power1")
 		{
+			PlayerScoreKeeper.Score2 += 1;
 			PlayerScoreKeeper.Health1 -= .01f;
 		}
 		else if(collision.gameObject.tag == "Power2")
 		{
+			PlayerScoreKeeper.Score2 += 5;
 			PlayerScoreKeeper.Health1 -= .02f;
 		}
 		else if(collision.gameObject.tag == "Power3")
 		{
+			PlayerScoreKeeper.Score2 += 10;
 			PlayerScoreKeeper.Health1 -= .025f;
 		}
 	}

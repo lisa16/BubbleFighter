@@ -26,7 +26,7 @@ public class DepthSourceView : MonoBehaviour
     // Only works at 4 right now
     private const int _DownsampleSize = 4;
     private const double _DepthScale = 0.1f;
-    private const int _Speed = 50;
+    private const int _Speed = 80;
     
     private MultiSourceManager _MultiManager;
     private ColorSourceManager _ColorManager;

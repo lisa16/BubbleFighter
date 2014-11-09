@@ -48,50 +48,52 @@ public class HandTrackingEffect : MonoBehaviour {
 			return;
 		}
 		
-		if(_trackedId1 == 0)
+		if(_trackedId1 == 0 && PlayerTracking.player1TrackNum != 0)
 		{
-			Kinect.CameraSpacePoint closetPerson = new Kinect.CameraSpacePoint() { Z = 10.0f };
-			foreach(var body in data)
-			{
-				if (body == null)
-				{
-					continue;
-				}
-				
-				Kinect.CameraSpacePoint bodyPos = body.Joints[Kinect.JointType.SpineBase].Position;
-				if( (bodyPos.X > -1.0f && bodyPos.X < 0) 
-				   && (bodyPos.Z > .5f && bodyPos.Z < 1.3f) )
-				{
-					if(body.IsTracked && bodyPos.Z < closetPerson.Z)
-					{
-						_trackedId1 = body.TrackingId;
-//						
-//						// set hand state tracking for this body
-//						_bodyManager.GetBodyFrameSource().OverrideHandTracking(_trackedId);
-					}
-				}
-			}
+			_trackedId1 = PlayerTracking.player1TrackNum;
+//			Kinect.CameraSpacePoint closetPerson = new Kinect.CameraSpacePoint() { Z = 10.0f };
+//			foreach(var body in data)
+//			{
+//				if (body == null)
+//				{
+//					continue;
+//				}
+//				
+//				Kinect.CameraSpacePoint bodyPos = body.Joints[Kinect.JointType.SpineBase].Position;
+//				if( (bodyPos.X > -1.0f && bodyPos.X < 0) 
+//				   && (bodyPos.Z > .5f && bodyPos.Z < 1.3f) )
+//				{
+//					if(body.IsTracked && bodyPos.Z < closetPerson.Z)
+//					{
+//						_trackedId1 = body.TrackingId;
+////						
+////						// set hand state tracking for this body
+////						_bodyManager.GetBodyFrameSource().OverrideHandTracking(_trackedId);
+//					}
+//				}
+//			}
 		}
 
-		if(_trackedId2 == 0)
+		if(_trackedId2 == 0	&& PlayerTracking.player2TrackNum != 0)
 		{
-			Kinect.CameraSpacePoint closetPerson = new Kinect.CameraSpacePoint() { Z = 10.0f };
-			foreach(var body in data)
-			{
-				if(body == null)
-				{
-					continue;
-				}
-				Kinect.CameraSpacePoint bodyPos = body.Joints[Kinect.JointType.SpineBase].Position;
-				if( (bodyPos.X > -1.0f && bodyPos.X < 1.0f)
-				   && (bodyPos.Z > .5f && bodyPos.Z < 1.3f))
-				{
-					if(body.IsTracked && bodyPos.Z < closetPerson.Z && _trackedId1 != body.TrackingId)
-					{
-						_trackedId2 = body.TrackingId;
-					}
-				}
-			}
+			_trackedId2 = PlayerTracking.player2TrackNum;
+//			Kinect.CameraSpacePoint closetPerson = new Kinect.CameraSpacePoint() { Z = 10.0f };
+//			foreach(var body in data)
+//			{
+//				if(body == null)
+//				{
+//					continue;
+//				}
+//				Kinect.CameraSpacePoint bodyPos = body.Joints[Kinect.JointType.SpineBase].Position;
+//				if( (bodyPos.X > -1.0f && bodyPos.X < 1.0f)
+//				   && (bodyPos.Z > .5f && bodyPos.Z < 1.3f))
+//				{
+//					if(body.IsTracked && bodyPos.Z < closetPerson.Z && _trackedId1 != body.TrackingId)
+//					{
+//						_trackedId2 = body.TrackingId;
+//					}
+//				}
+//			}
 		}
 
 
@@ -311,16 +313,16 @@ public class HandTrackingEffect : MonoBehaviour {
 	}
 
 
-	private void createSpell(int i, int j, int k, Kinect.Body body) {
+	private void createSpell(int spellType, int playerNum, int isLeftHand, Kinect.Body body) {
 
-				Kinect.CameraSpacePoint position = new Kinect.CameraSpacePoint();
-				if (k == 0) {
+		Kinect.CameraSpacePoint position = body.Joints [Kinect.JointType.HandRight].Position;
+				if (isLeftHand == 0) {
 						position = body.Joints [Kinect.JointType.HandRight].Position;
-				} else if (k == 1) {
+				} else if (isLeftHand == 1) {
 						position = body.Joints [Kinect.JointType.HandLeft].Position;
 				}
 				GameObject moves = null;
-				switch (i) {
+				switch (spellType) {
 				case 1:
 						moves = (GameObject)Instantiate (basic);
 						break;
@@ -340,15 +342,27 @@ public class HandTrackingEffect : MonoBehaviour {
 						moves = (GameObject)Instantiate (block);
 						break;
 				}
+
 				if (moves != null)
 					Destroy (moves, 3);
+		if(playerNum == 0)
+		{
+			moves.layer = LayerMask.NameToLayer("Player1");
+			moves.transform.position = new Vector3(-position.Z* 10f, position.Y* 10f, position.X* 10f);
 
-				moves.transform.position = new Vector3 (position.X, position.Y, position.Z);
+		}
+		else if(playerNum == 1)
+		{
+			moves.layer = LayerMask.NameToLayer("Player2");
 
-				if (j == 0 && i != 5) {
+			moves.transform.position = new Vector3(position.Z* 10f, position.Y* 10f, position.X* 10f);
+		}
+		Debug.Log(string.Format("X:{0}, Y:{1}, Z{2}", position.X * 10, position.Y* 10, position.Z* 10));
+
+				if (playerNum == 0 && spellType != 5) {
 						moves.rigidbody.velocity = new Vector3 (50, 0, 0);
 						moves.rigidbody.AddForce (2000, 0, 0);
-				} else if (j == 1 && i != 5) {
+				} else if (playerNum == 1 && spellType != 5) {
 						moves.rigidbody.velocity = new Vector3 (-50, 0, 0);
 						moves.rigidbody.AddForce (-2000, 0, 0);
 				}

@@ -193,10 +193,16 @@ public class BodySourceView : MonoBehaviour
 
 //		bool isP1 = isPlayer1;
 
-		if (isPlayer1)
-						_player1 = body.TrackingId;
-				else
-						_player2 = body.TrackingId;
+		if (isPlayer1) 
+		{
+			_player1 = body.TrackingId;
+			PlayerTracking.player1TrackNum = body.TrackingId;
+		}
+			else
+		{
+			_player2 = body.TrackingId;
+			PlayerTracking.player2TrackNum = body.TrackingId;
+		}
 
 //		ulong player = body.TrackingId;
 //		Kinect.Joint? head = null;
