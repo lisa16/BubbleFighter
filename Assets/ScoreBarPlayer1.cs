@@ -38,3 +38,4 @@ public class ScoreBarPlayer1 : MonoBehaviour {
 		}
 	}
 
+}
