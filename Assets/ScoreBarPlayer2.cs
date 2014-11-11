@@ -14,7 +14,7 @@ public class ScoreBarPlayer2 : MonoBehaviour {
 	void Update () {
 				image.fillAmount = PlayerScoreKeeper.Health2;
 
-				if (PlayerScoreKeeper.Health2 == 0f) {
+				if (PlayerScoreKeeper.Health2 <= 0f) {
 						Application.LoadLevel ("player1end");
 				}
 		}
