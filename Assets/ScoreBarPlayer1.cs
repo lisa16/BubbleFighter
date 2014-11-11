@@ -33,8 +33,8 @@ public class ScoreBarPlayer1 : MonoBehaviour {
 			image.color = Color32.Lerp(dangerColor, dangerColorFlash, Mathf.Sin (Time.deltaTime));
 		}
 
-		if (PlayerScoreKeeper.Health2 == 0f) {
-			Application.LoadLevel ("player1end");
+		if (PlayerScoreKeeper.Health1 <= 0f) {
+			Application.LoadLevel ("player2end");
 		}
 	}
 
