@@ -13,5 +13,10 @@ public class ScoreBarPlayer1 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		image.fillAmount = PlayerScoreKeeper.Health1;
+
+		if (PlayerScoreKeeper.Health2 == 0f) {
+			Application.LoadLevel ("player1end");
+		}
 	}
-}
+	}
+
