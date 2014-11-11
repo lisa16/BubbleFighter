@@ -14,7 +14,7 @@ public class ScoreBarPlayer1 : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		image = GetComponent<Image>();
-		dangerColorFlash = new Color32 (dangerColor.r, dangerColor.g, dangerColor.b, .5f);
+		dangerColorFlash = new Color32 (dangerColor.r, dangerColor.g, dangerColor.b, 127);
 	}
 	
 	// Update is called once per frame

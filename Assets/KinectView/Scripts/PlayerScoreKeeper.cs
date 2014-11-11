@@ -17,7 +17,7 @@ public static class PlayerScoreKeeper {
 	public const string PLAYER2SCORE = "Player2Score";
 
 	public static Dictionary<string, int> StaticIntMap = new Dictionary<string, int>();
-	public static Dictionary<string, float> StaticFloatMap = new Dictionary<string, int>();
+	public static Dictionary<string, float> StaticFloatMap = new Dictionary<string, float>();
 
 	public static void Put(string key, int value)
 	{
