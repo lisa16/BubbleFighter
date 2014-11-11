@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
+//Depreciated!!!!
 public class OnP2Hit : MonoBehaviour {
 
 	// Use this for initialization
@@ -17,18 +18,18 @@ public class OnP2Hit : MonoBehaviour {
 	{
 		if(collision.gameObject.tag == "Power1")
 		{
-			PlayerScoreKeeper.Score1 += 1;
-			PlayerScoreKeeper.Health2 -= .01f;
+			GlobalUtil.Score1 += 1;
+			GlobalUtil.Health2 -= .01f;
 		}
 		else if(collision.gameObject.tag == "Power2")
 		{
-			PlayerScoreKeeper.Score1 += 5;
-			PlayerScoreKeeper.Health2 -= .02f;
+			GlobalUtil.Score1 += 5;
+			GlobalUtil.Health2 -= .02f;
 		}
 		else if(collision.gameObject.tag == "Power3")
 		{
-			PlayerScoreKeeper.Score1 += 10;
-			PlayerScoreKeeper.Health2 -= .025f;
+			GlobalUtil.Score1 += 10;
+			GlobalUtil.Health2 -= .025f;
 		}
 	}
 }

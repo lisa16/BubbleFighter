@@ -19,12 +19,12 @@ public class ScoreBarPlayer1 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		image.fillAmount = PlayerScoreKeeper.Health1;
-		if(PlayerScoreKeeper.Health1 > .4)
+		image.fillAmount = GlobalUtil.Health1;
+		if(GlobalUtil.Health1 > .4)
 		{
 			image.color = healthyColor;
 		}
-		else if(PlayerScoreKeeper.Health1 >.2)
+		else if(GlobalUtil.Health1 >.2)
 		{
 			image.color = cautionColor;
 		}
@@ -33,7 +33,7 @@ public class ScoreBarPlayer1 : MonoBehaviour {
 			image.color = Color32.Lerp(dangerColor, dangerColorFlash, Mathf.Sin (Time.deltaTime));
 		}
 
-		if (PlayerScoreKeeper.Health1 <= 0f) {
+		if (GlobalUtil.Health1 <= 0f) {
 			Application.LoadLevel ("player2end");
 		}
 	}

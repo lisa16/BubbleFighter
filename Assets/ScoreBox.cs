@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -16,6 +16,6 @@ public class ScoreBox : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		text.text = string.Format(scoreText, PlayerScoreKeeper.Score1, PlayerScoreKeeper.Score2); //set the text in the text component
+		text.text = string.Format(scoreText, GlobalUtil.Score1, GlobalUtil.Score2); //set the text in the text component
 }
 }

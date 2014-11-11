@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -12,9 +12,9 @@ public class ScoreBarPlayer2 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-				image.fillAmount = PlayerScoreKeeper.Health2;
+				image.fillAmount = GlobalUtil.Health2;
 
-				if (PlayerScoreKeeper.Health2 <= 0f) {
+				if (GlobalUtil.Health2 <= 0f) {
 						Application.LoadLevel ("player1end");
 				}
 		}
