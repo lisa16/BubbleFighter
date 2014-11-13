@@ -15,15 +15,10 @@ public class HandMovementScript : MonoBehaviour {
 		}
 	void Update ()
 	{
-
-
-
-
 		// If Right Hand is empty null it finding else it changing hand position
 		if( RightHand == null)
 		{
 			RightHand = GameObject.Find("HandRight");
-
 		}
 		else
 		{
