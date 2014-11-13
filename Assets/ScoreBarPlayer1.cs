@@ -9,17 +9,20 @@ public class ScoreBarPlayer1 : MonoBehaviour {
 	private Color32 healthyColor, cautionColor, dangerColor;
 	private Color32 dangerColorFlash;
 
-	bool colorFlash = false;
+	private float _timePassed = 0;
 
 	// Use this for initialization
 	void Start () {
 		image = GetComponent<Image>();
-		dangerColorFlash = new Color32 (dangerColor.r, dangerColor.g, dangerColor.b, 127);
+		dangerColorFlash = new Color (dangerColor.r, dangerColor.g, dangerColor.b, 0.5f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		_timePassed += Time.deltaTime;
+
 		image.fillAmount = GlobalUtil.Health1;
+
 		if(GlobalUtil.Health1 > .4)
 		{
 			image.color = healthyColor;
@@ -28,14 +31,13 @@ public class ScoreBarPlayer1 : MonoBehaviour {
 		{
 			image.color = cautionColor;
 		}
+		else if(GlobalUtil.Health1 >0)
+		{
+			image.color = Color.Lerp(dangerColor, dangerColorFlash, (Mathf.Sin (_timePassed*10) + 1f)/2);
+		}
 		else
 		{
-			image.color = Color32.Lerp(dangerColor, dangerColorFlash, Mathf.Sin (Time.deltaTime));
-		}
-
-		if (GlobalUtil.Health1 <= 0f) {
 			Application.LoadLevel ("player2end");
 		}
 	}
-
 }
