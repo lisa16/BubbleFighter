@@ -334,12 +334,12 @@ public class HandTrackingEffect : MonoBehaviour {
 		if (playerNum == 0 && spellType != 5) 
 		{
 			moves.rigidbody.velocity = new Vector3 (50, 0, 0);
-			moves.rigidbody.AddForce (2000, 0, 0);
+//			moves.rigidbody.AddForce (2000, 0, 0);
 		}
 		else if (playerNum == 1 && spellType != 5) 
 		{
 			moves.rigidbody.velocity = new Vector3 (-50, 0, 0);
-			moves.rigidbody.AddForce (-2000, 0, 0);
+//			moves.rigidbody.AddForce (-2000, 0, 0);
 		}
 	}
 }
