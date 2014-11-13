@@ -357,7 +357,7 @@ public class HandTrackingEffect : MonoBehaviour {
 
 			moves.transform.position = new Vector3(position.Z* 10f, position.Y* 10f, position.X* 10f);
 		}
-		Debug.Log(string.Format("X:{0}, Y:{1}, Z{2}", position.X * 10, position.Y* 10, position.Z* 10));
+//		Debug.Log(string.Format("X:{0}, Y:{1}, Z{2}", position.X * 10, position.Y* 10, position.Z* 10));
 
 				if (playerNum == 0 && spellType != 5) {
 						moves.rigidbody.velocity = new Vector3 (50, 0, 0);
