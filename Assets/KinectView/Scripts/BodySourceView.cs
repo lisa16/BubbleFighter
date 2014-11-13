@@ -185,6 +185,7 @@ public class BodySourceView : MonoBehaviour
             jointObj.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
             jointObj.name = jt.ToString();
             jointObj.transform.parent = body.transform;
+			jointObj.collider.enabled = false; //removing collider so it doesn't collide with our elements!
         }
 
         return body;

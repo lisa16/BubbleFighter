@@ -311,7 +311,7 @@ public class HandTrackingEffect : MonoBehaviour {
 			}
 			case 5:
 			{
-				moves = (GameObject)Instantiate (block);
+//				moves = (GameObject)Instantiate (block);
 				break;
 			}
 		}
