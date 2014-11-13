@@ -2,8 +2,11 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class ScoreBarPlayer1 : MonoBehaviour {
+public class PlayerHealthBar : MonoBehaviour {
 	private Image image;
+
+	[SerializeField]
+	private string _playerHealth, _enemyPlayerScore;
 
 	[SerializeField]
 	private Color32 healthyColor, cautionColor, dangerColor;
@@ -21,17 +24,17 @@ public class ScoreBarPlayer1 : MonoBehaviour {
 	void Update () {
 		_timePassed += Time.deltaTime;
 
-		image.fillAmount = GlobalUtil.Health1;
+		image.fillAmount = (float)GlobalUtil.Get(_playerHealth);
 
-		if(GlobalUtil.Health1 > .4)
+		if(image.fillAmount > .4)
 		{
 			image.color = healthyColor;
 		}
-		else if(GlobalUtil.Health1 >.2)
+		else if(image.fillAmount >.2)
 		{
 			image.color = cautionColor;
 		}
-		else if(GlobalUtil.Health1 >0)
+		else if(image.fillAmount >0)
 		{
 			image.color = Color.Lerp(dangerColor, dangerColorFlash, (Mathf.Sin (_timePassed*10) + 1f)/2);
 		}

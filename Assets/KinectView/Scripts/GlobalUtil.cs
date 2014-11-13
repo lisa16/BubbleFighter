@@ -4,21 +4,23 @@ using System.Collections.Generic;
 
 public static class GlobalUtil {
 
-	public static float Health1 = 1f;
-	public static float Health2 = 1f;
-
-	public static int Score1 = 0;
-	public static int Score2 = 0;
-
 	public const string PLAYER1HEALTH = "Player1Health";
 	public const string PLAYER2HEALTH = "Player2Health";
 
 	public const string PLAYER1SCORE = "Player1Score";
 	public const string PLAYER2SCORE = "Player2Score";
 
-	private static Dictionary<string, string> StaticMap = new Dictionary<string, string>();
+	private static Dictionary<string, double> StaticMap = new Dictionary<string, double>();
 
-	public static void Put(string key, string value)
+	static GlobalUtil()
+	{
+		GlobalUtil.Put (PLAYER1HEALTH, 1);
+		GlobalUtil.Put (PLAYER1SCORE, 0);
+		GlobalUtil.Put (PLAYER2HEALTH, 1);
+		GlobalUtil.Put (PLAYER2SCORE, 0);
+	}
+
+	public static void Put(string key, double value)
 	{
 		if(StaticMap.ContainsKey(key))
 	    {
@@ -30,8 +32,20 @@ public static class GlobalUtil {
 		}
 	}
 
-	public static string Get(string key)
+	public static void AddAmount(string key, double amount)
+    {
+		Put(key, Get(key) + amount);
+	}
+
+	public static double Get(string key)
 	{
-		return StaticMap[key];
+		if(StaticMap.ContainsKey(key))
+		{
+			return StaticMap[key];
+		}
+		else
+		{
+			return 0;
+		}
 	}
 }
