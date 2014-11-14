@@ -133,7 +133,7 @@ public class HandTrackingEffect : MonoBehaviour {
 					{
 						createSpell(3, 0, false, body);
 						timeFire1 = 0;
-						}
+					}
 				}
 				else if (IsUltimate(body))
 				{
