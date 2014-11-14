@@ -37,8 +37,6 @@ public class BodySourceView : MonoBehaviour
         return _isRightHandClosed;
     }
 
-    public ulong _player1, _player2;
-
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
 
@@ -106,9 +104,16 @@ public class BodySourceView : MonoBehaviour
             {
                 Destroy(_Bodies[trackingId]);
                 _Bodies.Remove(trackingId);
+				if(PlayerTracking.player1TrackNum == trackingId)
+				{
+					PlayerTracking.player1TrackNum = 0;
+				}
+				else if(PlayerTracking.player2TrackNum == trackingId)
+				{
+					PlayerTracking.player2TrackNum = 0;
+				}
             }
         }
-        isPlayer1 = true;
 
 		foreach (Kinect.Body body in rawBodies)
         {
@@ -122,10 +127,17 @@ public class BodySourceView : MonoBehaviour
                 if (!_Bodies.ContainsKey(body.TrackingId))
                 {
                     _Bodies[body.TrackingId] = CreateBodyObject(body);
+					if(PlayerTracking.player1TrackNum == 0 && PlayerTracking.player2TrackNum != body.TrackingId)
+					{
+						PlayerTracking.player1TrackNum = body.TrackingId;
+					}
+					else if(PlayerTracking.player2TrackNum == 0 && PlayerTracking.player1TrackNum != body.TrackingId)
+					{
+						PlayerTracking.player2TrackNum = body.TrackingId;
+					}
                 }
 
                 RefreshBodyObject(body, _Bodies[body.TrackingId]);
-                isPlayer1 = false;
             }
         }
     }
@@ -143,18 +155,6 @@ public class BodySourceView : MonoBehaviour
 			if (body.IsTracked)
 			{
 				trackingIds.Add(body.TrackingId);
-				
-//				if (body.HandRightState == Kinect.HandState.Closed)
-//				{
-//					_isRightHandClosed = true;
-//					if (isCreated == false)
-//						isCreated = true;
-//				}
-//				else
-//				{
-//					_isRightHandClosed = false;
-//					isCreated = false;
-//				}
 			}
 		}
 		return trackingIds;
@@ -187,23 +187,8 @@ public class BodySourceView : MonoBehaviour
         return body;
     }
 
-
     private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
     {
-
-        //		bool isP1 = isPlayer1;
-
-        if (isPlayer1)
-        {
-            _player1 = body.TrackingId;
-            PlayerTracking.player1TrackNum = body.TrackingId;
-        }
-        else
-        {
-            _player2 = body.TrackingId;
-            PlayerTracking.player2TrackNum = body.TrackingId;
-        }
-
         //		ulong player = body.TrackingId;
         //		Kinect.Joint? head = null;
         //		head = body.Joints [Kinect.JointType.Head];
@@ -214,7 +199,6 @@ public class BodySourceView : MonoBehaviour
         //		}
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
-
             Kinect.Joint sourceJoint = body.Joints[jt];
             Kinect.JointOrientation sourceJointOrientation = body.JointOrientations[jt];
             Kinect.Joint? targetJoint = null;
@@ -306,57 +290,53 @@ public class BodySourceView : MonoBehaviour
             }
             return newPos;
         }
-        Vector3 newPos2 = new Vector3(joint.Position.Z * 10, joint.Position.Y * 10, joint.Position.X * 10);
+		else
+		{
+	        Vector3 newPos2 = new Vector3(joint.Position.Z * 10, joint.Position.Y * 10, joint.Position.X * 10);
 
-        if (joint.JointType == Kinect.JointType.Head)
-        {
-            var hPos = joint.Position;
-            P2Head.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
-            var ori2 = orien.Orientation;
-            P2Head.transform.rotation = new Quaternion(ori2.X, ori2.Y, ori2.Z, ori2.W);
-        }
-        else if (joint.JointType == Kinect.JointType.SpineMid)
-        {
-            var hPos = joint.Position;
-            P2Body.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
-            var ori2 = orien.Orientation;
-            P2Body.transform.rotation = new Quaternion(ori2.X, ori2.Y, ori2.Z, ori2.W);
-        }
-        else if (joint.JointType == Kinect.JointType.HandLeft)
-        {
-            var lhandPos = joint.Position;
-            P2LimbLH.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
-            var ori = orien.Orientation;
-            P2LimbLH.transform.rotation = new Quaternion(ori.X, ori.Y, ori.Z, ori.W);
-        }
-        else if (joint.JointType == Kinect.JointType.HandRight)
-        {
-            var rhandPos = joint.Position;
-            P2LimbRH.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
-            var ori = orien.Orientation;
-            P2LimbRH.transform.rotation = new Quaternion(ori.X, ori.Y, ori.Z, ori.W);
-        }
-        else if (joint.JointType == Kinect.JointType.FootLeft)
-        {
-            var lfootPos = joint.Position;
-            P2LimbLF.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
-            var ori = orien.Orientation;
-            P2LimbLF.transform.rotation = new Quaternion(ori.X, ori.Y, ori.Z, ori.W);
-        }
-        else if (joint.JointType == Kinect.JointType.FootRight)
-        {
-            var rfootPos = joint.Position;
-            P2LimbRF.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
-            var ori = orien.Orientation;
-            P2LimbRF.transform.rotation = new Quaternion(ori.X, ori.Y, ori.Z, ori.W);
-        }
-        return newPos2;
+	        if (joint.JointType == Kinect.JointType.Head)
+	        {
+	            var hPos = joint.Position;
+	            P2Head.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
+	            var ori2 = orien.Orientation;
+	            P2Head.transform.rotation = new Quaternion(ori2.X, ori2.Y, ori2.Z, ori2.W);
+	        }
+	        else if (joint.JointType == Kinect.JointType.SpineMid)
+	        {
+	            var hPos = joint.Position;
+	            P2Body.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
+	            var ori2 = orien.Orientation;
+	            P2Body.transform.rotation = new Quaternion(ori2.X, ori2.Y, ori2.Z, ori2.W);
+	        }
+	        else if (joint.JointType == Kinect.JointType.HandLeft)
+	        {
+	            var lhandPos = joint.Position;
+	            P2LimbLH.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
+	            var ori = orien.Orientation;
+	            P2LimbLH.transform.rotation = new Quaternion(ori.X, ori.Y, ori.Z, ori.W);
+	        }
+	        else if (joint.JointType == Kinect.JointType.HandRight)
+	        {
+	            var rhandPos = joint.Position;
+	            P2LimbRH.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
+	            var ori = orien.Orientation;
+	            P2LimbRH.transform.rotation = new Quaternion(ori.X, ori.Y, ori.Z, ori.W);
+	        }
+	        else if (joint.JointType == Kinect.JointType.FootLeft)
+	        {
+	            var lfootPos = joint.Position;
+	            P2LimbLF.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
+	            var ori = orien.Orientation;
+	            P2LimbLF.transform.rotation = new Quaternion(ori.X, ori.Y, ori.Z, ori.W);
+	        }
+	        else if (joint.JointType == Kinect.JointType.FootRight)
+	        {
+	            var rfootPos = joint.Position;
+	            P2LimbRF.transform.position = new Vector3(newPos2.x, newPos2.y, newPos2.z);
+	            var ori = orien.Orientation;
+	            P2LimbRF.transform.rotation = new Quaternion(ori.X, ori.Y, ori.Z, ori.W);
+	        }
+	        return newPos2;
+		}
     }
-
-    //	private static Vector3 GetVector3FromJointP2(Kinect.Joint joint)
-    //	{
-    //		return new Vector3(joint.Position.Z * 10, joint.Position.Y * 10, joint.Position.X * 10);
-    //	}
-
-
 }
