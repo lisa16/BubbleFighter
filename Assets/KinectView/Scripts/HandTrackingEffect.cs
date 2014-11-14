@@ -77,86 +77,69 @@ public class HandTrackingEffect : MonoBehaviour {
 				isTracking1 = true; 	// flag that we are still tracking the person
 				
                 // render particles if the right hand is closed
-				if (body.HandRightState == Kinect.HandState.Closed
-				    && body.HandLeftState == Kinect.HandState.Closed)
+				if (IsBlock(body))
 				{
 					//Block
 				}
-				else if ((body.HandRightState == Kinect.HandState.Closed 
-				           && body.HandLeftState == Kinect.HandState.Open) ||
-				          (body.HandRightState == Kinect.HandState.Open
-				 		   && body.HandLeftState == Kinect.HandState.Closed))
+				else if (IsLeftBasic(body))
 				{
-					//Basic Attack
-					if(body.HandRightState == Kinect.HandState.Closed)
+					//Basic Attack from Left Hand
+					if(timeBA1 > 0.5f)
 					{
-						if(timeBA1 > 0.5f)
-						{
-							createSpell(1, 0, 0, body);
-							timeBA1 = 0;
-						}
-					}
-					else if(body.HandLeftState == Kinect.HandState.Closed)
-					{
-						if(timeBA1 > 0.5f)
-						{
-							createSpell(1, 0, 1, body);
-							timeBA1 = 0;
-						}
+						createSpell(1, 0, true, body);
+						timeBA1 = 0;
 					}
 				}
-				else if ((body.HandRightState == Kinect.HandState.Lasso 
-				           && body.HandLeftState == Kinect.HandState.Open) ||
-				          (body.HandRightState == Kinect.HandState.Open
-				 		   && body.HandLeftState == Kinect.HandState.Lasso))
+				else if(IsRightBasic(body))
 				{
-					//Ice
-					if(body.HandRightState == Kinect.HandState.Lasso)
+					//Basic Attack from Right Hand
+					if(timeBA1 > 0.5f)
 					{
-						if(timeIce1 > 3.0f)
-						{
-							createSpell(2, 0, 0, body);
-							timeIce1 = 0;
-						}
-					}
-					else if(body.HandLeftState == Kinect.HandState.Lasso)
-					{
-						if(timeIce1 > 3.0f)
-						{
-							createSpell(2, 0, 1, body);
-							timeIce1 = 0;
-						}
+						createSpell(1, 0, false, body);
+						timeBA1 = 0;
 					}
 				}
-				else if ((body.HandRightState == Kinect.HandState.Lasso 
-				           && body.HandLeftState == Kinect.HandState.Closed) ||
-				          (body.HandRightState == Kinect.HandState.Closed
-				 		   && body.HandLeftState == Kinect.HandState.Lasso))
+				else if (IsLeftIce(body))
 				{
-					//Fire
-					if(body.HandRightState == Kinect.HandState.Lasso)
+					//Ice Attack from Left Hand
+					if(timeIce1 > 3.0f)
 					{
-						if(timeFire1 > 3.0f)
-						{
-							createSpell(3, 0, 0, body);
-							timeFire1 = 0;
-						}
-					}
-					else if(body.HandRightState == Kinect.HandState.Lasso)
-					{
-						if(timeFire1 > 3.0f)
-						{
-							createSpell(3, 0, 1, body);
-							timeFire1 = 0;
-						}
+						createSpell(2, 0, true, body);
+						timeIce1 = 0;
 					}
 				}
-				else if (body.HandRightState == Kinect.HandState.Lasso 
-				           && body.HandLeftState == Kinect.HandState.Lasso)
+				else if(IsRightIce(body))
+				{
+					//Ice Attack from Right Hand
+					if(timeIce1 > 3.0f)
+					{
+						createSpell(2, 0, false, body);
+						timeIce1 = 0;
+					}
+				}
+				else if (IsLeftFire(body))
+				{
+					//Fire Attack from Left Hand
+					if(timeFire1 > 3.0f)
+					{
+						createSpell(3, 0, true, body);
+						timeFire1 = 0;
+					}
+				}
+				else if(IsRightFire(body))
+				{
+					//Fire Attack from Right Hand
+					if(timeFire1 > 3.0f)
+					{
+						createSpell(3, 0, false, body);
+						timeFire1 = 0;
+						}
+				}
+				else if (IsUltimate(body))
 				{
 					if(timeUlti1 > 6.0f)
 					{
-						createSpell(4, 0, 0, body);
+						createSpell(4, 0, false, body);
 						timeUlti1 = 0;
 					}
 				}
@@ -165,89 +148,74 @@ public class HandTrackingEffect : MonoBehaviour {
 					//Standby
 				}
 			}
-			if(body.IsTracked && _trackedId2 == body.TrackingId)
+			else if(body.IsTracked && _trackedId2 == body.TrackingId)
 			{
-				isTracking2 = true;
-
-				if (body.HandRightState == Kinect.HandState.Closed
-				    && body.HandLeftState == Kinect.HandState.Closed)
+				isTracking2 = true; 	// flag that we are still tracking the person
+				
+				// render particles if the right hand is closed
+				if (IsBlock(body))
 				{
 					//Block
 				}
-				else if ((body.HandRightState == Kinect.HandState.Closed 
-				           && body.HandLeftState == Kinect.HandState.Open) ||
-				          (body.HandRightState == Kinect.HandState.Open
-				 		   && body.HandLeftState == Kinect.HandState.Closed))
+				else if (IsLeftBasic(body))
 				{
-					//Basic Attack
-					if(body.HandRightState == Kinect.HandState.Closed)
+					//Basic Attack from Left Hand
+					if(timeBA2 > 0.5f)
 					{
-						if(timeBA2 > 0.5f)
-						{
-							createSpell(1, 1, 0, body);
-							timeBA2 = 0;
-						}
-						
-					}
-					else if(body.HandLeftState == Kinect.HandState.Closed)
-					{
-						if(timeBA2 > 0.5f)
-						{
-							createSpell(1, 1, 1, body);
-							timeBA2 = 0;
-						}
+						createSpell(1, 1, true, body);
+						timeBA2 = 0;
 					}
 				}
-				else if ((body.HandRightState == Kinect.HandState.Lasso 
-				           && body.HandLeftState == Kinect.HandState.Open) ||
-				          (body.HandRightState == Kinect.HandState.Open
-				 		   && body.HandLeftState == Kinect.HandState.Lasso))
+				else if(IsRightBasic(body))
 				{
-					//Ice
-					if(body.HandRightState == Kinect.HandState.Lasso)
+					//Basic Attack from Right Hand
+					if(timeBA2 > 0.5f)
 					{
-						if(timeIce2 > 3.0f)
-						{
-							createSpell(2, 1, 0, body);
-							timeIce2 = 0;
-						}
-					}
-					else if(body.HandLeftState == Kinect.HandState.Lasso)
-					{
-						if(timeIce2 > 3.0f)
-						{
-							createSpell(2, 1, 1, body);
-							timeIce2 = 0;
-						}
+						createSpell(1, 1, false, body);
+						timeBA2 = 0;
 					}
 				}
-				else if ((body.HandRightState == Kinect.HandState.Lasso && body.HandLeftState == Kinect.HandState.Closed)
-				         || (body.HandRightState == Kinect.HandState.Closed && body.HandLeftState == Kinect.HandState.Lasso))
+				else if (IsLeftIce(body))
 				{
-					//Fire
-					if(body.HandRightState == Kinect.HandState.Lasso)
+					//Ice Attack from Left Hand
+					if(timeIce2 > 3.0f)
 					{
-						if(timeFire2 > 3.0f)
-						{
-							createSpell(3, 1, 0, body);
-							timeFire2 = 0;
-						}
-					}
-					else if(body.HandLeftState == Kinect.HandState.Lasso)
-					{
-						if(timeFire2 > 3.0f)
-						{
-							createSpell(3, 1, 1, body);
-							timeFire2 = 0;
-						}
+						createSpell(2, 1, true, body);
+						timeIce2 = 0;
 					}
 				}
-				else if (body.HandRightState == Kinect.HandState.Lasso 
-				         && body.HandLeftState == Kinect.HandState.Lasso)
+				else if(IsRightIce(body))
+				{
+					//Ice Attack from Right Hand
+					if(timeIce2 > 3.0f)
+					{
+						createSpell(2, 1, false, body);
+						timeIce2 = 0;
+					}
+				}
+				else if (IsLeftFire(body))
+				{
+					//Fire Attack from Left Hand
+					if(timeFire2> 3.0f)
+					{
+						createSpell(3, 1, true, body);
+						timeFire2 = 0;
+					}
+				}
+				else if(IsRightFire(body))
+				{
+					//Fire Attack from Right Hand
+					if(timeFire2 > 3.0f)
+					{
+						createSpell(3, 1, false, body);
+						timeFire2 = 0;
+					}
+				}
+				else if (IsUltimate(body))
 				{
 					if(timeUlti2 > 6.0f)
 					{
-						createSpell(4, 1, 0, body);
+						createSpell(4, 1, false, body);
 						timeUlti2 = 0;
 					}
 				}
@@ -262,7 +230,6 @@ public class HandTrackingEffect : MonoBehaviour {
 		if(!isTracking1)
 		{
 			_trackedId1 = 0;
-
 		}
 
 		if(!isTracking2)
@@ -271,16 +238,88 @@ public class HandTrackingEffect : MonoBehaviour {
 		}
 	}
 
-	private void createSpell(int spellType, int playerNum, int isLeftHand, Kinect.Body body) 
+	private bool IsUltimate(Kinect.Body body)
+	{
+		if (body.HandRightState == Kinect.HandState.Lasso 
+		    && body.HandLeftState == Kinect.HandState.Lasso)
+			return true;
+		else
+			return false;
+	}
+
+	private bool IsLeftFire(Kinect.Body body)
+	{
+		if (body.HandRightState == Kinect.HandState.Closed 
+		    && body.HandLeftState == Kinect.HandState.Lasso)
+			return true;
+		else
+			return false;
+	}
+	
+	private bool IsRightFire(Kinect.Body body)
+	{
+		if (body.HandRightState == Kinect.HandState.Lasso 
+		    && body.HandLeftState == Kinect.HandState.Closed)
+			return true;
+		else
+			return false;
+	}
+
+	private bool IsLeftIce(Kinect.Body body)
+	{
+		if (body.HandRightState == Kinect.HandState.Open 
+		    && body.HandLeftState == Kinect.HandState.Lasso)
+			return true;
+		else
+			return false;
+	}
+	
+	private bool IsRightIce(Kinect.Body body)
+	{
+		if (body.HandRightState == Kinect.HandState.Lasso 
+		    && body.HandLeftState == Kinect.HandState.Open)
+			return true;
+		else
+			return false;
+	}
+
+	private bool IsLeftBasic(Kinect.Body body)
+	{
+		if (body.HandRightState == Kinect.HandState.Open 
+		    && body.HandLeftState == Kinect.HandState.Closed)
+			return true;
+		else
+			return false;
+	}
+
+	private bool IsRightBasic(Kinect.Body body)
+	{
+		if (body.HandRightState == Kinect.HandState.Closed 
+			&& body.HandLeftState == Kinect.HandState.Open)
+			return true;
+		else
+			return false;
+	}
+
+	private bool IsBlock(Kinect.Body body)
+	{
+		if(body.HandRightState == Kinect.HandState.Closed
+		   && body.HandLeftState == Kinect.HandState.Closed)
+			return true;
+		else
+			return false;
+	}
+
+	private void createSpell(int spellType, int playerNum, bool isLeftHand, Kinect.Body body) 
 	{
 		Kinect.CameraSpacePoint position = body.Joints [Kinect.JointType.HandRight].Position;
-		if (isLeftHand == 0) 
-		{
-			position = body.Joints [Kinect.JointType.HandRight].Position;
-		}
-		else if (isLeftHand == 1) 
+		if (isLeftHand) 
 		{
 			position = body.Joints [Kinect.JointType.HandLeft].Position;
+		}
+		else 
+		{
+			position = body.Joints [Kinect.JointType.HandRight].Position;
 		}
 
 		GameObject moves = null;
