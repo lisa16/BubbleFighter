@@ -13,23 +13,8 @@ public class BodySourceView : MonoBehaviour
 
     private bool isPlayer1 = true;
 
-    public GameObject card;
-
-    public GameObject P1Head;
-    public GameObject P2Head;
-    public GameObject P1Body;
-    public GameObject P2Body;
-    public GameObject P1Limb;
-    public GameObject P2Limb;
-    private GameObject P1LimbLH;
-    private GameObject P2LimbLH;
-    private GameObject P1LimbRH;
-    private GameObject P2LimbRH;
-    private GameObject P1LimbLF;
-    private GameObject P2LimbLF;
-    private GameObject P1LimbRF;
-    private GameObject P2LimbRF;
-
+	public GameObject P1Head, P2Head, P1Body, P2Body, P1Limb, P2Limb;
+    private GameObject P1LimbLH, P2LimbLH, P1LimbRH, P2LimbRH, P1LimbLF, P2LimbLF, P1LimbRF, P2LimbRF;
 
     void Start()
     {
@@ -93,48 +78,24 @@ public class BodySourceView : MonoBehaviour
     {
         if (BodySourceManager == null)
         {
+			Debug.LogError("BodySourceManager GameObject has not been initialized");
             return;
         }
 
         _BodyManager = BodySourceManager.GetComponent<BodySourceManager>();
         if (_BodyManager == null)
         {
+			Debug.LogError("BodySourceManager GameObject does not contain BodySourceManager Script");
             return;
         }
 
-        Kinect.Body[] data = _BodyManager.GetData();
-        if (data == null)
+        Kinect.Body[] rawBodies = _BodyManager.GetData();
+        if (rawBodies == null)
         {
             return;
         }
 
-        List<ulong> trackedIds = new List<ulong>();
-        foreach (var body in data)
-        {
-            if (body == null)
-            {
-                continue;
-            }
-
-            if (body.IsTracked)
-            {
-                trackedIds.Add(body.TrackingId);
-
-                if (body.HandRightState == Kinect.HandState.Closed)
-                {
-                    _isRightHandClosed = true;
-                    if (isCreated == false)
-                        isCreated = true;
-                    //CreateNewobject(GameObject.Find("HandRight").transform.localPosition);
-                }
-                else
-                {
-                    _isRightHandClosed = false;
-                    isCreated = false;
-
-                }
-            }
-        }
+		List<ulong> trackedIds = GetTrackedIds (rawBodies);
 
         List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
 
@@ -149,7 +110,7 @@ public class BodySourceView : MonoBehaviour
         }
         isPlayer1 = true;
 
-        foreach (var body in data)
+		foreach (Kinect.Body body in rawBodies)
         {
             if (body == null)
             {
@@ -160,7 +121,7 @@ public class BodySourceView : MonoBehaviour
             {
                 if (!_Bodies.ContainsKey(body.TrackingId))
                 {
-                    _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
+                    _Bodies[body.TrackingId] = CreateBodyObject(body);
                 }
 
                 RefreshBodyObject(body, _Bodies[body.TrackingId]);
@@ -169,8 +130,39 @@ public class BodySourceView : MonoBehaviour
         }
     }
 
-    private GameObject CreateBodyObject(ulong id)
+	private List<ulong> GetTrackedIds(Kinect.Body[] bodies)
+	{
+		List<ulong> trackingIds = new List<ulong>();
+		foreach (var body in bodies)
+		{
+			if (body == null)
+			{
+				continue;
+			}
+			
+			if (body.IsTracked)
+			{
+				trackingIds.Add(body.TrackingId);
+				
+//				if (body.HandRightState == Kinect.HandState.Closed)
+//				{
+//					_isRightHandClosed = true;
+//					if (isCreated == false)
+//						isCreated = true;
+//				}
+//				else
+//				{
+//					_isRightHandClosed = false;
+//					isCreated = false;
+//				}
+			}
+		}
+		return trackingIds;
+	}
+
+    private GameObject CreateBodyObject(Kinect.Body bodyData)
     {
+		ulong id = bodyData.TrackingId;
         GameObject body = new GameObject("Body:" + id);
 
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
@@ -186,8 +178,12 @@ public class BodySourceView : MonoBehaviour
             jointObj.name = jt.ToString();
             jointObj.transform.parent = body.transform;
 			jointObj.collider.enabled = false; //removing collider so it doesn't collide with our elements!
+			Kinect.Joint joint;
+			if(bodyData.Joints.TryGetValue(jt, out joint))
+			{
+				jointObj.renderer.material.color = BodySourceView.GetColorForState(joint.TrackingState);
+			}
         }
-
         return body;
     }
 

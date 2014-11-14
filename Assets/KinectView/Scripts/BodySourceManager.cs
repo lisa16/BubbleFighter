@@ -32,7 +32,7 @@ public class BodySourceManager : MonoBehaviour
     {
         if (_Reader != null)
         {
-            var frame = _Reader.AcquireLatestFrame();
+            BodyFrame frame = _Reader.AcquireLatestFrame();
             if (frame != null)
             {
                 if (_Data == null)
